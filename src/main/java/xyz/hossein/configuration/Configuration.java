@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import xyz.hossein.standard.annotations.*;
 
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Configuration {
 	private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
@@ -24,16 +22,28 @@ public class Configuration {
 		}
 
 		xyz.hossein.standard.annotations.Configuration configuration = clazz.getAnnotation(xyz.hossein.standard.annotations.Configuration.class);
+
+		List<String> packages = new ArrayList<>();
+		packages.add(configuration.defaultPackage());
+
+		if (configuration.defaultPackages() != null) {
+			for (String defaultPackage : configuration.defaultPackages()) {
+				packages.add(defaultPackage);
+			}
+		}
+
 		Context context = new Context();
 
-		Reflections reflections = new Reflections(configuration.defaultPackage());
-		initializeAlgorithms(context, reflections);
-		initializeMessages(context, reflections);
-		initializeProcessors(context, reflections);
-		initializePOJOs(context, reflections);
+		for (String defaultPackage : packages) {
+			Reflections reflections = new Reflections(defaultPackage);
+			initializeAlgorithms(context, reflections);
+			initializeMessages(context, reflections);
+			initializeProcessors(context, reflections);
+			initializePOJOs(context, reflections);
 
-		reflections = new Reflections(configuration.defaultPackage(), new FieldAnnotationsScanner());
-		initializeWires(context, reflections);
+			reflections = new Reflections(defaultPackage, new FieldAnnotationsScanner());
+			initializeWires(context, reflections);
+		}
 
 		return context;
 	}
