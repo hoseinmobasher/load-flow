@@ -21,7 +21,7 @@ public class DistributionTest {
 	public void distribute() {
 		distributor.distribute();
 
-		for (Distributor distributor: distributors) {
+		for (Distributor distributor : distributors) {
 			distributor.distribute();
 		}
 

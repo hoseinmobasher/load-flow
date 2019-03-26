@@ -29,4 +29,4 @@ Also, you can find some abstract class/interfaces in this project that listed be
 The main class of this project is LoadFlowConfiguration that is first-class citizen and contains `run` method that used 
 to initialize our load flow context.
 
-The project contains `POJO` annotation that will be used to annotate classes  
+The project contains `POJO` annotation that will be used to annotate classes .
